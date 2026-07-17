@@ -27,4 +27,11 @@ check "kein bob-keys.json"    "$(grep -rc 'bob-keys.json' plugins/ | grep -vc ':
 check "kein bob-setup-Verweis" "$(grep -rl 'bob-setup' plugins/ | wc -l)"                              "0"
 check "kein claude mcp add"   "$(grep -rl 'claude mcp add' plugins/ | wc -l)"                          "0"
 
+check "LICENSE existiert"     "$([ -f LICENSE ] && echo yes || echo no)"                               "yes"
+check "README ohne Zip"       "$(grep -ic 'zip' README.md || true)"                                    "0"
+check "README ohne bob-setup" "$(grep -c 'bob-setup' README.md || true)"                               "0"
+check "README nennt marketplace add" "$(grep -c 'plugin marketplace add DJTJ9/bob-member-kit' README.md)" "1"
+check "README nennt install"  "$(grep -c 'plugin install bob@bob-kit' README.md)"                      "1"
+check "README verweist /mitmachen" "$(grep -c 'job-scanner.thinkshark.de/mitmachen' README.md)"        "1"
+
 exit $fail
