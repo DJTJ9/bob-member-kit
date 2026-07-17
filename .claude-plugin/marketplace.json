@@ -1,0 +1,14 @@
+{
+  "name": "bob-kit",
+  "owner": {
+    "name": "DJTJ9",
+    "url": "https://github.com/DJTJ9"
+  },
+  "plugins": [
+    {
+      "name": "bob",
+      "source": "./plugins/bob",
+      "description": "Bob der Job-Bot — Jobs mit deinem eigenen Claude bewerten und suchen."
+    }
+  ]
+}

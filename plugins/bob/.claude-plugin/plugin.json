@@ -1,0 +1,37 @@
+{
+  "name": "bob",
+  "displayName": "Bob der Job-Bot",
+  "description": "Verbindet dein Claude mit Bob (job-scanner.thinkshark.de): wartende Jobs bewerten, optional selbst neue suchen.",
+  "version": "1.0.0",
+  "author": {
+    "name": "DJTJ9"
+  },
+  "homepage": "https://job-scanner.thinkshark.de/mitmachen",
+  "repository": "https://github.com/DJTJ9/bob-member-kit",
+  "license": "MIT",
+  "keywords": ["jobs", "mcp", "scoring"],
+  "userConfig": {
+    "bob_token": {
+      "type": "string",
+      "title": "Bob API-Token",
+      "description": "Dein persönliches Token von https://job-scanner.thinkshark.de — Startseite -> 'API-Token erzeugen'. Format: bob_ + 48 Hex-Zeichen. Wird nur einmal angezeigt.",
+      "sensitive": true,
+      "required": true
+    },
+    "adzuna_app_id": {
+      "type": "string",
+      "title": "Adzuna App-ID (optional)",
+      "description": "Nur für /bob:bob-scan. Kostenlos auf https://developer.adzuna.com registrieren. Leer lassen, wenn du nur bewerten willst. Achtung: wird im Klartext in settings.json abgelegt."
+    },
+    "adzuna_app_key": {
+      "type": "string",
+      "title": "Adzuna App-Key (optional)",
+      "description": "Nur für /bob:bob-scan. Gehört zur Adzuna App-ID. Achtung: wird im Klartext in settings.json abgelegt."
+    },
+    "jooble_key": {
+      "type": "string",
+      "title": "Jooble API-Key (optional)",
+      "description": "Nur für /bob:bob-scan. Kostenlos auf https://jooble.org/api/about beantragen. Achtung: wird im Klartext in settings.json abgelegt."
+    }
+  }
+}
