@@ -21,6 +21,7 @@ check "plugin.json kein mcpServers" "$(jq -r 'has("mcpServers")' plugins/bob/.cl
 
 check "bob-score existiert"   "$([ -f plugins/bob/skills/bob-score/SKILL.md ] && echo yes || echo no)" "yes"
 check "bob-scan existiert"    "$([ -f plugins/bob/skills/bob-scan/SKILL.md ] && echo yes || echo no)"  "yes"
+check "bob-learn existiert"   "$([ -f plugins/bob/skills/bob-learn/SKILL.md ] && echo yes || echo no)" "yes"
 check ".claude/skills weg"    "$([ -d .claude/skills ] && echo yes || echo no)"                        "no"
 check "bob-scan nutzt user_config" "$(grep -c 'user_config.adzuna_app_id' plugins/bob/skills/bob-scan/SKILL.md)" "2"
 check "kein bob-keys.json"    "$(grep -rc 'bob-keys.json' plugins/ | grep -vc ':0$' || true)"          "0"
