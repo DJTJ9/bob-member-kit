@@ -48,6 +48,8 @@ nur die unten genannten Felder.
 ## Abschlussbericht
 
 Kurz an den User: X Jobs extrahiert, Y Scores geschrieben (Server-Stats aus
-push_batch aufsummieren). Hinweis: Ergebnisse sind sofort im Dashboard auf
+push_batch aufsummieren). Inhalts-Duplikate, die `bob-scan` schon serverseitig erkannt
+hat, tauchen hier gar nicht erst auf — kein Score-Aufwand für bereits bekannte Jobs.
+Hinweis: Ergebnisse sind sofort im Dashboard auf
 https://job-scanner.thinkshark.de sichtbar. Neue Jobs selbst suchen: `/bob:bob-scan`
 (braucht kostenlose Adzuna-/Jooble-Keys in der Plugin-Konfiguration).

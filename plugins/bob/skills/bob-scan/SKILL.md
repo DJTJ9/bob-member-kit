@@ -36,10 +36,15 @@ https://jooble.org/api/about). Stopp.
    - **Jooble** (falls Key gesetzt): POST `https://jooble.org/api/${user_config.jooble_key}`
      mit JSON-Body `{"keywords": "<QUERY>", "location": ""}`
      → `jobs[]`: url = `link`, raw_text = title + company + location + snippet.
-3. Baue Listings: `{"url": ..., "portal": "adzuna"|"jooble", "raw_text": ...}`.
-   Listings ohne url oder mit leerem raw_text weglassen. raw_text auf ~8000 Zeichen
-   kürzen.
+3. Baue Listings: `{"url": ..., "portal": "adzuna"|"jooble", "raw_text": ..., "title": ...,
+   "company": ..., "location": ...}`. `title`/`company`/`location` kommen direkt aus den in
+   Schritt 2 gelesenen API-Feldern (Adzuna: `title`, `company.display_name`,
+   `location.display_name` — Jooble: `title`, `company`, `location`) und bleiben zusätzlich
+   zum verklebten `raw_text` erhalten. Listings ohne url oder mit leerem raw_text weglassen.
+   raw_text auf ~8000 Zeichen kürzen.
 4. Rufe MCP-Tool `push_jobs` (Server `bob`) mit maximal 50 Listings pro Aufruf.
-   Dedup passiert serverseitig — Duplikate sind ok und werden gezählt.
-5. Berichte dem User: X eingeliefert, Y Duplikate. Schlage `/bob:bob-score` vor, um die
-   neuen Jobs direkt zu extrahieren und zu bewerten.
+   Dedup passiert serverseitig gegen bekannte URLs UND gegen bereits bekannte Job-Inhalte
+   (anderes Portal, gleicher Job) — beides ok und wird gezählt.
+5. Berichte dem User: X eingeliefert, Y URL-Duplikate, Z Inhalts-Duplikate (Server-Stats
+   aus push_jobs: inserted/duplicates_url/duplicates_content). Schlage `/bob:bob-score`
+   vor, um die neuen Jobs direkt zu extrahieren und zu bewerten.
