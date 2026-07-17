@@ -19,4 +19,12 @@ check "mcp url"               "$(jq -r '.mcpServers.bob.url' plugins/bob/.mcp.js
 check "mcp auth header"       "$(jq -r '.mcpServers.bob.headers.Authorization' plugins/bob/.mcp.json)" "Bearer \${user_config.bob_token}"
 check "plugin.json kein mcpServers" "$(jq -r 'has("mcpServers")' plugins/bob/.claude-plugin/plugin.json)" "false"
 
+check "bob-score existiert"   "$([ -f plugins/bob/skills/bob-score/SKILL.md ] && echo yes || echo no)" "yes"
+check "bob-scan existiert"    "$([ -f plugins/bob/skills/bob-scan/SKILL.md ] && echo yes || echo no)"  "yes"
+check ".claude/skills weg"    "$([ -d .claude/skills ] && echo yes || echo no)"                        "no"
+check "bob-scan nutzt user_config" "$(grep -c 'user_config.adzuna_app_id' plugins/bob/skills/bob-scan/SKILL.md)" "2"
+check "kein bob-keys.json"    "$(grep -rc 'bob-keys.json' plugins/ | grep -vc ':0$' || true)"          "0"
+check "kein bob-setup-Verweis" "$(grep -rl 'bob-setup' plugins/ | wc -l)"                              "0"
+check "kein claude mcp add"   "$(grep -rl 'claude mcp add' plugins/ | wc -l)"                          "0"
+
 exit $fail
