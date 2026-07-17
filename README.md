@@ -4,7 +4,7 @@ Claude-Code-Plugin für **Bob der Job-Bot** (https://job-scanner.thinkshark.de).
 Du fährst Teile der Bob-Pipeline mit deinem eigenen Claude-Abo — kein Python,
 keine Server-Einrichtung, kein Download.
 
-Anleitung für Einsteiger: **https://job-scanner.thinkshark.de/mitmachen**
+Anleitung für Einsteiger: **https://job-scanner.thinkshark.de/anleitung**
 
 ## Installation
 

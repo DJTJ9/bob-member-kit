@@ -32,6 +32,6 @@ check "README ohne Zip"       "$(grep -ic 'zip' README.md || true)"             
 check "README ohne bob-setup" "$(grep -c 'bob-setup' README.md || true)"                               "0"
 check "README nennt marketplace add" "$(grep -c 'plugin marketplace add DJTJ9/bob-member-kit' README.md)" "1"
 check "README nennt install"  "$(grep -c 'plugin install bob@bob-kit' README.md)"                      "1"
-check "README verweist /mitmachen" "$(grep -c 'job-scanner.thinkshark.de/mitmachen' README.md)"        "1"
+check "README verweist /anleitung" "$(grep -c 'job-scanner.thinkshark.de/anleitung' README.md)"        "1"
 
 exit $fail
