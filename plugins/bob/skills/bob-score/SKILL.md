@@ -18,12 +18,16 @@ nur die unten genannten Felder.
 2. Rufe MCP-Tool `pull_pending_jobs` (limit 30). Antwort:
    - `jobs`: unextrahierte Jobs (`fingerprint`, `raw_text`, …) — extrahieren UND bewerten
    - `to_score`: bereits extrahierte Jobs ohne Score für deine Profile — NUR bewerten
-3. Sind `jobs` UND `to_score` leer: fertig, Abschlussbericht an den User.
+   - `to_rescore`: bereits gescorte Jobs, die nach deinen Learn-Erkenntnissen eine
+     LLM-Neubewertung brauchen (`profile_id` steht am Eintrag) — NUR für genau
+     dieses Profil neu bewerten, Entry ohne `extraction`-Feld senden
+3. Sind `jobs`, `to_score` UND `to_rescore` leer: fertig, Abschlussbericht an den User.
 4. Für jeden Job in `jobs` — extrahiere aus raw_text:
    title, company, location, remote (onsite|hybrid|remote|unknown), employment_type,
    language (de|en), salary, requirements (Liste), tech_stack (Liste).
 5. Bewerte jeden Job (aus `jobs` nach der Extraktion, aus `to_score` direkt) pro
-   eigenem Profil: je Kriterium 0-10 Punkte (null, falls der Text keine Info
+   eigenem Profil — Jobs aus `to_rescore` dagegen NUR für das am Eintrag genannte
+   `profile_id`: je Kriterium 0-10 Punkte (null, falls der Text keine Info
    liefert) + kurzer Grund; Veto-Check gegen no_gos (Veto = String mit Begründung,
    sonst null). Nutze feedback (vote up/down) und preferences als verbindliche
    Präferenz-Hinweise.
@@ -38,17 +42,28 @@ nur die unten genannten Felder.
     "scores": {"<profile_id>": {"veto": null,
                "kriterien": {"<key>": {"punkte": 7, "grund": "..."}}}}}
    ```
-   Ohne Extraktion (für `to_score`): dasselbe Entry ohne `extraction`-Feld.
+   Ohne Extraktion (für `to_score` und `to_rescore`): dasselbe Entry ohne
+   `extraction`-Feld.
 
    Maximal 50 Entries pro Aufruf. Bei Validierungsfehler (Tool-Error): Fehlermeldung
    lesen, das betroffene Entry korrigieren, erneut senden — der Server lehnt den
    ganzen Batch ab, es wurde nichts gespeichert.
 7. Weiter bei Schritt 2 (nächste Seite).
 
+## Spar-Modus
+
+`get_my_profile` liefert je Profil `spar_modus`. Ist `max_jobs` eine Zahl N:
+verarbeite in DIESEM Lauf insgesamt höchstens N Jobs (über `jobs` + `to_score` +
+`to_rescore` hinweg gezählt) und beende die Schleife danach — auch wenn noch
+Jobs warten. Sag dem User am Ende, dass das Spar-Limit erreicht wurde und wie
+er es unter https://job-scanner.thinkshark.de/einstellungen ändert.
+Ist `max_jobs` null: alles Wartende verarbeiten.
+
 ## Abschlussbericht
 
 Kurz an den User: X Jobs extrahiert, Y Scores geschrieben (Server-Stats aus
-push_batch aufsummieren). Inhalts-Duplikate, die `bob-scan` schon serverseitig erkannt
+push_batch aufsummieren). Rescore-Jobs zählen separat (X neu bewertet nach
+Learn-Erkenntnissen). Inhalts-Duplikate, die `bob-scan` schon serverseitig erkannt
 hat, tauchen hier gar nicht erst auf — kein Score-Aufwand für bereits bekannte Jobs.
 Hinweis: Ergebnisse sind sofort im Dashboard auf
 https://job-scanner.thinkshark.de sichtbar. Neue Jobs selbst suchen: `/bob:bob-scan`

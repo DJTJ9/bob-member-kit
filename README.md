@@ -22,13 +22,14 @@ nur für `/bob:bob-scan` nötig.
 Updates ziehst du mit `/plugin marketplace update bob-kit` — Auto-Update ist bei
 Fremd-Marketplaces standardmäßig aus.
 
-## Die drei Befehle
+## Die vier Befehle
 
 | Befehl | Was er tut |
 |---|---|
 | `/bob:bob-score` | Holt wartende Jobs, extrahiert + bewertet sie mit DEINEM Claude, schreibt zurück |
 | `/bob:bob-scan` | Sucht mit deinen eigenen (kostenlosen) Adzuna/Jooble-Keys neue Jobs und liefert sie ein |
 | `/bob:bob-learn` | Analysiert deine ↑/↓-Votes im Chat, fragt bei Widersprüchen nach, schreibt bestätigte Kriterien-/Präferenz-Änderungen zurück |
+| `/bob:bob-profil` | Schärft dein Suchprofil im Chat: Freitext rein, bestätigte Skills/Zielrollen/Gewichte gehen zurück |
 
 Jede Extraktion, die du fährst, verbessert die Ergebnisse ALLER Profile — auch deins.
 
@@ -45,6 +46,8 @@ was mit deinen Daten geschieht, bevor du dein Claude-Abo dafür hergibst.
 - `plugins/bob/skills/bob-scan/SKILL.md` — dito für die eigene Suche.
 - `plugins/bob/skills/bob-learn/SKILL.md` — dito für die Lern-Analyse: liest deine
   Votes, schreibt nur Erkenntnisse zurück, die du im Chat bestätigt hast.
+- `plugins/bob/skills/bob-profil/SKILL.md` — dito für die Profil-Schärfung: analysiert
+  deinen Freitext, schreibt nur Änderungen zurück, die du im Chat bestätigt hast.
 
 **Welche Daten fließen:** Job-Rohtexte und deine Profil-Kriterien kommen vom
 Server zu deinem Claude; Extraktionen und Scores gehen zurück. Deine Bewertungen
