@@ -25,12 +25,17 @@ nur die unten genannten Felder.
 4. Für jeden Job in `jobs` — extrahiere aus raw_text:
    title, company, location, remote (onsite|hybrid|remote|unknown), employment_type,
    language (de|en), salary, requirements (Liste), tech_stack (Liste).
-5. Bewerte jeden Job (aus `jobs` nach der Extraktion, aus `to_score` direkt) pro
-   eigenem Profil — Jobs aus `to_rescore` dagegen NUR für das am Eintrag genannte
-   `profile_id`: je Kriterium 0-10 Punkte (null, falls der Text keine Info
-   liefert) + kurzer Grund; Veto-Check gegen no_gos (Veto = String mit Begründung,
-   sonst null). Nutze feedback (vote up/down) und preferences als verbindliche
-   Präferenz-Hinweise.
+5. Bewerte pro eigenem Profil — die beiden Eintrags-Arten nach unterschiedlichen
+   Modellen:
+   - `jobs` (nach der Extraktion) und `to_score` (direkt): je Kriterium 0-10 Punkte
+     (null, falls der Text keine Info liefert) + kurzer Grund; Veto-Check gegen no_gos
+     (Veto = String mit Begründung, sonst null).
+   - `to_rescore` NUR für das am Eintrag genannte `profile_id`: einen **Bonus** von
+     **−20 bis +30** auf den bestehenden deterministischen Score, mit kurzer Begründung,
+     wie sich der Auf-/Abschlag aus `preferences`/`feedback` ergibt. Der deterministische
+     Score ist Startpunkt, nicht Deckel — anheben bei starkem Freitext-Match, abwerten
+     wenn Freitext dagegen spricht. Kein Kriterien-Objekt, kein Veto-Feld.
+   Nutze feedback (vote up/down) und preferences als verbindliche Präferenz-Hinweise.
 6. Rufe MCP-Tool `push_batch` mit den Entries:
 
    Mit Extraktion (für `jobs`):
@@ -42,8 +47,16 @@ nur die unten genannten Felder.
     "scores": {"<profile_id>": {"veto": null,
                "kriterien": {"<key>": {"punkte": 7, "grund": "..."}}}}}
    ```
-   Ohne Extraktion (für `to_score` und `to_rescore`): dasselbe Entry ohne
-   `extraction`-Feld.
+   Ohne Extraktion (für `to_score`): dasselbe Entry ohne `extraction`-Feld — die
+   `scores` behalten das `kriterien`-Objekt (kein `extraction`).
+
+   Rescore (für `to_rescore`): kein `extraction`, kein `kriterien`, kein `veto` —
+   pro `profile_id` ein `bonus`/`grund`-Objekt (Bonus-Spanne −20…+30, Server clamped
+   den Endscore auf 0-100):
+   ```json
+   {"fingerprint": "<aus pull>",
+    "scores": {"<profile_id>": {"bonus": 15, "grund": "Freitext: KI nur mit Games-Bezug — exakt getroffen"}}}
+   ```
 
    Maximal 50 Entries pro Aufruf. Bei Validierungsfehler (Tool-Error): Fehlermeldung
    lesen, das betroffene Entry korrigieren, erneut senden — der Server lehnt den
