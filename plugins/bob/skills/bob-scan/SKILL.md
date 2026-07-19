@@ -26,6 +26,9 @@ https://jooble.org/api/about). Stopp.
 
 ## Ablauf
 
+Standort und Sprache filterst du nicht selbst — der geteilte Job-Pool wird
+serverseitig aus dem Spar-Modus (`/einstellungen`) danach gefiltert.
+
 1. Rufe MCP-Tool `get_my_profile` (Server `bob`) auf. Baue Suchbegriffe aus
    `data.target_roles` (plus `data.skills` als Ergänzung, max. 5 Queries).
 2. **Entdecker-Nachbarrollen** (nur wenn `spar_modus.neighbor_roles` im Profil

@@ -65,6 +65,9 @@ nur die unten genannten Felder.
 
 ## Spar-Modus
 
+Standort und Sprache werden serverseitig aus dem Spar-Modus (`/einstellungen`)
+gefiltert — die wartenden Jobs sind bereits vorgefiltert, du musst nicht danach filtern.
+
 `get_my_profile` liefert je Profil `spar_modus`. Ist `max_jobs` eine Zahl N:
 verarbeite in DIESEM Lauf insgesamt höchstens N Jobs (über `jobs` + `to_score` +
 `to_rescore` hinweg gezählt) und beende die Schleife danach — auch wenn noch
