@@ -37,7 +37,8 @@ Fremd-Marketplaces standardmäßig aus.
 
 | Befehl | Was er tut |
 |---|---|
-| `/bob:bob-score` | Holt wartende Jobs, extrahiert + bewertet sie mit DEINEM Claude, schreibt zurück |
+| `/bob:bob-score` | Holt wartende Jobs, extrahiert (Haiku) + bewertet (Sonnet) sie mit DEINEM Claude, schreibt zurück |
+| `/bob:bob-score hoch` | Wie oben, aber Bewertung auf deinem Session-Modell (`/model opus` davor = echtes Opus) |
 | `/bob:bob-scan` | Scannt StepStone/Indeed über deine Heim-IP im lokalen Browser und liefert die Jobs ein — Suchbegriffe/Portale steuerst du in den Website-Einstellungen |
 | `/bob:bob-learn` | Analysiert deine ↑/↓-Votes im Chat, fragt bei Widersprüchen nach, schreibt bestätigte Kriterien-/Präferenz-Änderungen zurück |
 | `/bob:bob-profil` | Schärft dein Suchprofil im Chat: Freitext rein, bestätigte Skills/Zielrollen/Gewichte gehen zurück |
