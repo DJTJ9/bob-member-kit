@@ -125,6 +125,11 @@ def scan_portal(engine: str, targets: list[dict], max_detail: int,
 
 
 def main() -> int:
+    for _stream in (sys.stdout, sys.stderr):
+        try:
+            _stream.reconfigure(encoding="utf-8")
+        except AttributeError:
+            pass  # umgeleiteter Stream ohne reconfigure — ok
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--config", required=True, help="JSON-Datei: Output von get_scan_config")
     ap.add_argument("--out", required=True, help="JSONL-Ausgabedatei (push_jobs-Listings)")

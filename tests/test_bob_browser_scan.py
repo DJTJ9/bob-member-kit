@@ -36,3 +36,20 @@ def test_make_listing_caps_raw_text_and_strips_title():
 
 def test_make_listing_rejects_short_or_blocked_pages():
     assert make_listing("https://x.de/j", "stepstone", "T", "zu kurz") is None
+
+
+def test_main_prints_non_ascii_under_cp1252_without_crash(tmp_path):
+    """Der 0-Targets-Pfad druckt einen Em-Dash nach stderr — unter cp1252-Locale
+    darf das NICHT mit UnicodeEncodeError abstürzen (Windows-Regression)."""
+    import subprocess, json, os
+    script = Path(__file__).resolve().parent.parent / "plugins" / "bob" / "bob_browser_scan.py"
+    cfg = tmp_path / "empty.json"
+    cfg.write_text(json.dumps({"targets": []}), encoding="utf-8")
+    out = tmp_path / "out.jsonl"
+    env = {**os.environ, "PYTHONIOENCODING": "cp1252"}
+    res = subprocess.run(
+        [sys.executable, str(script), "--config", str(cfg), "--out", str(out)],
+        capture_output=True, text=True, env=env)
+    assert res.returncode == 1  # 0-Targets → return 1
+    assert "UnicodeEncodeError" not in res.stderr
+    assert "Keine Targets" in res.stderr
