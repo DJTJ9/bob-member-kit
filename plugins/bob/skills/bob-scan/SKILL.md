@@ -50,7 +50,10 @@ stellst du auf https://job-scanner.thinkshark.de unter /einstellungen ein.
 5. Lies `listings.jsonl` und rufe MCP-Tool `push_jobs` (Server `bob`) mit
    maximal 50 Listings pro Aufruf auf, bis alle eingeliefert sind. Dedup passiert
    serverseitig gegen bekannte URLs und bekannte Job-Inhalte — Duplikate sind ok
-   und werden gezählt.
+   und werden gezählt. Jedes Listing enthält neben `url`/`portal`/`raw_text`/`title`
+   auch `company`/`location` (portalagnostisch aus dem `schema.org/JobPosting`-JSON-LD
+   der Detailseite, best-effort — sonst `""`); der Server nutzt sie zur LLM-freien
+   Extraktion.
 
 6. Berichte dem User: je Portal Suchen/Details/Fehler (Script-Stats) und die
    Server-Stats (inserted/duplicates_url/duplicates_content). Schlage

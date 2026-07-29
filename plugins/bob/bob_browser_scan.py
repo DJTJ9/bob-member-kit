@@ -56,14 +56,41 @@ def extract_detail_urls(html: str, base_url: str, pattern: str) -> list[str]:
     return out
 
 
-def make_listing(url: str, portal: str, title: str, body_text: str) -> dict | None:
+def parse_jsonld_org_location(html: str) -> tuple[str, str]:
+    """Best-effort schema.org/JobPosting: hiringOrganization.name + jobLocation.address.
+    Kein Treffer → ('', ''). Fehlertolerant (defektes JSON wird übersprungen)."""
+    for m in re.finditer(
+            r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
+            html, re.DOTALL | re.IGNORECASE):
+        try:
+            data = json.loads(m.group(1).strip())
+        except (json.JSONDecodeError, ValueError):
+            continue
+        for node in (data if isinstance(data, list) else [data]):
+            if not isinstance(node, dict) or node.get("@type") != "JobPosting":
+                continue
+            org = node.get("hiringOrganization") or {}
+            company = org.get("name", "") if isinstance(org, dict) else ""
+            loc = node.get("jobLocation") or {}
+            if isinstance(loc, list):
+                loc = loc[0] if loc else {}
+            addr = loc.get("address", {}) if isinstance(loc, dict) else {}
+            location = addr.get("addressLocality", "") if isinstance(addr, dict) else ""
+            return (company or "").strip(), (location or "").strip()
+    return "", ""
+
+
+def make_listing(url: str, portal: str, title: str, body_text: str,
+                 html: str = "") -> dict | None:
     """Rein/netzfrei: eine JSONL-Zeile im push_jobs-Schema — None bei leerer/
     geblockter Seite."""
     text = (body_text or "").strip()
     if len(text) < _MIN_TEXT_CHARS:
         return None
+    company, location = parse_jsonld_org_location(html)
     return {"url": url, "portal": portal,
-            "raw_text": text[:_MAX_RAW_CHARS], "title": (title or "").strip()}
+            "raw_text": text[:_MAX_RAW_CHARS], "title": (title or "").strip(),
+            "company": company, "location": location}
 
 
 def _sync_playwright(engine: str):
@@ -109,7 +136,8 @@ def scan_portal(engine: str, targets: list[dict], max_detail: int,
                 page.goto(url, timeout=_TIMEOUT_MS, wait_until="domcontentloaded")
                 page.wait_for_timeout(_SETTLE_MS)
                 listing = make_listing(url, targets[0]["portal"],
-                                       page.title(), page.inner_text("body"))
+                                       page.title(), page.inner_text("body"),
+                                       page.content())
             except Exception as e:  # noqa: BLE001
                 print(f"WARN Detail {url}: {e}", file=sys.stderr)
                 stats["errors"] += 1
