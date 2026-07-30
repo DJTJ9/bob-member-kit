@@ -37,8 +37,8 @@ Fremd-Marketplaces standardmäßig aus.
 
 | Befehl | Was er tut |
 |---|---|
-| `/bob:bob-score` | Holt wartende Jobs, extrahiert (Haiku) + bewertet (Sonnet) sie mit DEINEM Claude, schreibt zurück |
-| `/bob:bob-score hoch` | Wie oben, aber Bewertung auf deinem Session-Modell (`/model opus` davor = echtes Opus) |
+| `/bob:bob-rescore` | Bewertet gute Treffer nach dem Lernen mit DEINEM Claude neu (Bonus, Tier mittel=Sonnet) |
+| `/bob:bob-rescore hoch` | Wie oben, aber Bewertung auf deinem Session-Modell (`/model opus` davor = echtes Opus) |
 | `/bob:bob-scan` | Scannt StepStone/Indeed über deine Heim-IP im lokalen Browser und liefert die Jobs ein — Suchbegriffe/Portale steuerst du in den Website-Einstellungen |
 | `/bob:bob-learn` | Analysiert deine ↑/↓-Votes im Chat, fragt bei Widersprüchen nach, schreibt bestätigte Kriterien-/Präferenz-Änderungen zurück |
 | `/bob:bob-profil` | Schärft dein Suchprofil im Chat: Freitext rein, bestätigte Skills/Zielrollen/Gewichte gehen zurück |
@@ -52,7 +52,7 @@ was mit deinen Daten geschieht, bevor du dein Claude-Abo dafür hergibst.
 
 - `plugins/bob/.mcp.json` — die einzige Verbindung nach außen: HTTPS zu
   `job-scanner.thinkshark.de/mcp`, authentifiziert mit deinem persönlichen Token.
-- `plugins/bob/skills/bob-score/SKILL.md` — die vollständige Anweisung an deinen
+- `plugins/bob/skills/bob-rescore/SKILL.md` — die vollständige Anweisung an deinen
   Claude. Nichts davon ist versteckt: er holt wartende Jobs, extrahiert Felder,
   bewertet gegen deine Profile, schickt das Ergebnis zurück.
 - `plugins/bob/skills/bob-scan/SKILL.md` — dito für die eigene Suche.
