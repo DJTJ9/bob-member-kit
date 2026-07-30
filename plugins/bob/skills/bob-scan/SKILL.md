@@ -7,7 +7,7 @@ description: Scannt StepStone/Indeed über die eigene Heim-IP im lokalen Browser
 
 > **Modellwahl egal — Haiku reicht.** Bob-Scan ist reines Python-Scraping + MCP-Push
 > und modellunabhängig; es findet kein LLM-Reasoning statt. Läuft auf jedem Session-Modell
-> gleich gut. Das Bewerten (`/bob:bob-score`) ist der modellabhängige Schritt.
+> gleich gut. Frische Funde bewertet der Server sofort deterministisch (gratis); der modellabhängige Schritt ist nur noch das Rescore (`/bob:bob-rescore`) nach dem Lernen.
 
 Du scannst Job-Portale mit dem LOKALEN Browser dieses Rechners — die Portale
 blocken Rechenzentrums-IPs, deine private Internetleitung kommt durch. WICHTIG:
@@ -56,8 +56,10 @@ stellst du auf https://job-scanner.thinkshark.de unter /einstellungen ein.
    Extraktion.
 
 6. Berichte dem User: je Portal Suchen/Details/Fehler (Script-Stats) und die
-   Server-Stats (inserted/duplicates_url/duplicates_content). Schlage
-   `/bob:bob-score` vor, um die neuen Jobs direkt zu extrahieren und zu bewerten.
+   Server-Stats (inserted/duplicates_url/duplicates_content). Die neuen Funde
+   sind sofort deterministisch gescort und im Dashboard sichtbar — kein weiterer
+   Schritt nötig. Nach einem `/bob:bob-learn`-Lauf kannst du gute Treffer mit
+   `/bob:bob-rescore` neu bewerten lassen.
 
 ## Geplante Läufe (optional)
 
