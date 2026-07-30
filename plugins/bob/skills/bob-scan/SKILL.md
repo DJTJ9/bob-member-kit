@@ -1,6 +1,6 @@
 ---
 name: bob-scan
-description: Scannt StepStone/Indeed über die eigene Heim-IP im lokalen Browser (Playwright/Patchright) und liefert die Listings per MCP push_jobs an Bob ein. Keine API-Keys nötig.
+description: Scannt StepStone/Indeed über die eigene Heim-IP im lokalen Browser (Playwright/Patchright) und lässt den Server zusätzlich Adzuna/Jooble mit den eigenen hinterlegten Keys durchsuchen. Listings laufen per MCP an Bob.
 ---
 
 # Bob-Scan (Browser über deine Heim-IP)
@@ -55,8 +55,15 @@ stellst du auf https://job-scanner.thinkshark.de unter /einstellungen ein.
    der Detailseite, best-effort — sonst `""`); der Server nutzt sie zur LLM-freien
    Extraktion.
 
-6. Berichte dem User: je Portal Suchen/Details/Fehler (Script-Stats) und die
-   Server-Stats (inserted/duplicates_url/duplicates_content). Die neuen Funde
+6. Rufe MCP-Tool `scan_aggregators` (Server `bob`) auf — der Server durchsucht
+   Adzuna/Jooble serverseitig mit deinen verschlüsselt hinterlegten Keys
+   (Website: Einstellungen → Anbindungen). Deine Keys erscheinen dabei NIE in
+   dieser Session. Enthält die Antwort nur `note` (keine Keys hinterlegt), ist
+   das kein Fehler — Hinweis an den User weitergeben, weiter mit dem Bericht.
+
+7. Berichte dem User: je Portal Suchen/Details/Fehler (Script-Stats) und die
+   Server-Stats (inserted/duplicates_url/duplicates_content) sowie die
+   `scan_aggregators`-Stats (ran/found/inserted), falls gelaufen. Die neuen Funde
    sind sofort deterministisch gescort und im Dashboard sichtbar — kein weiterer
    Schritt nötig. Nach einem `/bob:bob-learn`-Lauf kannst du gute Treffer mit
    `/bob:bob-rescore` neu bewerten lassen.
